@@ -1,24 +1,23 @@
-cript that takes in a URL and an email, sends a POST request to the passed
-URL with the email as a parameter, and displays the body of the response
-(decoded in utf-8).
+#!/usr/bin/python3
+"""
+POST request to the passed URL with the email as a parameter
 """
 import urllib.request
-import urllib.parse
-import sys
+from sys import argv
 
-
-if __name__ == "__main__":
-    url = sys.argv[1]
-    email = sys.argv[2]
-    param = {
-        "email": email
-    }
-    query_string = urllib.parse.urlencode(param)
-    data = query_string.encode("ascii")
+def main(argv):
+    """
+    Sends a POST request to the passed URL with the email as a parameter,
+    and displays the body of the response (decoded in utf-8)
+    """
+    values = {'email': argv[2]}
+    data = urllib.parse.urlencode(values)
+    data = data.encode('utf8')
+    url = argv[1]
     req = urllib.request.Request(url, data)
     with urllib.request.urlopen(req) as response:
-        # If you do not pass the data argument, urllib uses a GET request.
-        # One way in which GET and POST requests differ is that POST requests
-        # often have "side-effects".
-        response_text = response.read().decode("utf-8")
-        print(response_text)
+        result = response.read()
+        print(result.decode('utf8'))
+
+if __name__ == "__main__":
+    main(argv)
